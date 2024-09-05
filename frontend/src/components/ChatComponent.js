@@ -11,6 +11,7 @@ const ChatComponent = () => {
   const [messages, setMessages] = useState([]);
   const fileInputRef = useRef(null);
   const [recording, setRecording] = useState(false);
+  const [audioEnabled, setAudioEnabled] = useState(true); // Default to 'on'
   const recognitionRef = useRef(null);
 
   // Initialize SpeechRecognition (Web Speech API)
@@ -37,7 +38,6 @@ const ChatComponent = () => {
       setInputValue(transcript); // Set the transcribed text in textarea
 
       const newMessage = { type: "sent", content: transcript };
-      // setMessages((prevMessages) => [...prevMessages, newMessage]);
     };
 
     recognition.onerror = (event) => {
@@ -73,6 +73,15 @@ const ChatComponent = () => {
     }
   };
 
+  // Text-to-Speech (TTS) Function
+  const speakText = (text) => {
+    if (audioEnabled && window.speechSynthesis) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  // Handle sending text message
   const handleSend = async () => {
     if (inputValue.trim()) {
       const newMessage = { type: "sent", content: inputValue };
@@ -90,6 +99,8 @@ const ChatComponent = () => {
         const data = await response.json();
         const responseMessage = { type: "received", content: data.info };
         setMessages((prevMessages) => [...prevMessages, responseMessage]);
+
+        if (audioEnabled) speakText(data.info); // Speak the response if audio is enabled
         setInputValue(""); // Reset the text input after sending
       } catch (error) {
         console.error("Error uploading text:", error);
@@ -120,6 +131,7 @@ const ChatComponent = () => {
         };
         setMessages((prevMessages) => [...prevMessages, fileMessage]);
 
+        if (audioEnabled) speakText(data.text); // Speak the response if audio is enabled
         setSelectedImage(null); // Reset after sending the file
         fileInputRef.current.value = ""; // Clear file input
       } catch (error) {
@@ -128,6 +140,7 @@ const ChatComponent = () => {
     }
   };
 
+  // Handle sending image
   const handleSendImage = async () => {
     if (selectedImage) {
       const formData = new FormData();
@@ -150,6 +163,8 @@ const ChatComponent = () => {
         const data = await response.json();
         const responseMessage = { type: "received", content: data.text };
         setMessages((prevMessages) => [...prevMessages, responseMessage]);
+
+        if (audioEnabled) speakText(data.text); // Speak the response if audio is enabled
         setSelectedImage(null); // Reset after sending the image
       } catch (error) {
         console.error("Error uploading image:", error);
@@ -181,6 +196,15 @@ const ChatComponent = () => {
                       } max-w-xs`}
                     >
                       {msg.content}
+                      {/* Add speaker button */}
+                      {typeof msg.content === "string" && (
+                        <button
+                          className="ml-2 text-blue-500"
+                          onClick={() => speakText(msg.content)}
+                        >
+                          🔊
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -223,6 +247,17 @@ const ChatComponent = () => {
                 }`}
               >
                 {isCam ? "Chat" : "Camera"}
+              </button>
+              <button
+                onClick={() => {
+                  setAudioEnabled(!audioEnabled);
+                  window.speechSynthesis.cancel(); // Stop any ongoing speech
+                }}
+                className={`px-4 py-2 rounded-lg font-semibold text-white ${
+                  audioEnabled ? "bg-blue-500" : "bg-gray-500"
+                }`}
+              >
+                {audioEnabled ? "Audio On" : "Audio Off"}
               </button>
             </div>
             <div className="flex space-x-4">
