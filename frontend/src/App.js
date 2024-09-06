@@ -10,6 +10,8 @@ import TwoCardComponent from "./components/TwoCardComponent";
 import Social from "./components/SocialComponent";
 import ChatComponent from "./components/ChatComponent";
 import LoginPage from "./components/LoginPage"; // Import your LoginPage component
+import ParticleRing from "./components/ParticleRing"; // Import ParticleRing component
+import LinksSection from "./components/Link";
 
 // modified
 import { useAuth0 } from "@auth0/auth0-react";
@@ -52,7 +54,13 @@ function App({ children }) {
         {loading ? (
           <Preloader />
         ) : (
-          <div className="bg-custom-gradient text-white min-h-screen bg-fixed bg-cover bg-center  ">
+          <div className="relative min-h-screen text-white bg-custom-gradient">
+            {/* Background particle animation */}
+            <div className="fixed top-0 left-0 w-full h-full -z-10">
+              <ParticleRing />
+            </div>
+  
+            {/* Foreground content */}
             <Header />
             <Routes>
               <Route path="/" element={<HeroSection />} />
@@ -61,6 +69,7 @@ function App({ children }) {
               {/* Add other routes if needed */}
               {/* You can conditionally render other components here if required */}
             </Routes>
+            <LinksSection/>
           </div>
         )}
       </Router>

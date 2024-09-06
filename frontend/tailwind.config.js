@@ -7,7 +7,8 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'custom-gradient': 'linear-gradient(to right, black, #05467c, black)', // Adjust light blue color as needed
+        // 'custom-gradient': 'linear-gradient(to right, black, #05467c, black)', // Adjust light blue color as needed
+        'custom-gradient': '',
       },
     },
   },
