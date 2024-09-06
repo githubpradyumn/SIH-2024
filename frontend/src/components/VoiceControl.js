@@ -30,15 +30,19 @@ const VoiceControl = () => {
       setTranscript(transcript);
 
       // Voice commands handling
-      if (transcript.includes("open chat")) {
+      if (transcript.includes("open the chat")) {
         console.log("Opening chat widget...");
         navigate("/chat", { replace: true });
       } else if (transcript.includes("go to home")) {
         console.log("Closing chat widget...");
         navigate("/", { replace: true });
-      } else if (transcript.includes("please open the camera")) {
+      } else if (transcript.includes("please turn on the camera")) {
         console.log("cameara on");
         setCam(true);
+        navigate("/chat", { replace: true });
+      } else if (transcript.includes("please turn off the camera")) {
+        console.log("cameara off");
+        setCam(false);
         navigate("/chat", { replace: true });
       } else if (transcript.includes("logout")) {
         console.log("Logging out...");

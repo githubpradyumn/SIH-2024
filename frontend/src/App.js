@@ -14,6 +14,7 @@ import ParticleRing from "./components/ParticleRing"; // Import ParticleRing com
 
 // modified
 import { useAuth0 } from "@auth0/auth0-react";
+import C2 from "./components/C2";
 const UserContext = createContext();
 
 function App({ children }) {
@@ -64,7 +65,8 @@ function App({ children }) {
             <Routes>
               <Route path="/" element={<HeroSection />} />
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/Chat" element={<ChatComponent />} />
+              <Route path="/Chat" element={<C2 />} />
+              {/* <Route path="/Chat" element={<ChatComponent />} /> */}
               {/* Add other routes if needed */}
               {/* You can conditionally render other components here if required */}
             </Routes>
