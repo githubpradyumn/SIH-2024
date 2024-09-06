@@ -5,8 +5,12 @@ import Social from "./SocialComponent";
 import { useAuth0 } from "@auth0/auth0-react";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
+import cardImage1 from "./card1.png";
+import cardImage2 from "./card2.png";
+import cardImage3 from "./card3.png";
 
 const HeroSection = () => {
+  const arr = ["card1", "card2", "card3"];
   const navigate = useNavigate();
   const now = new Date();
   const options = { year: "numeric", month: "long", day: "numeric" };
@@ -42,7 +46,7 @@ const HeroSection = () => {
               className="rounded-xl border-2 border-dashed border-black bg-white px-8 py-3 font-semibold uppercase text-black transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[6px_6px_0px_black] hover:bg-gradient-to-r hover:from-purple-500 hover:to-blue-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 active:translate-x-0 active:translate-y-0 active:shadow-none active:bg-gradient-to-r active:from-purple-600 active:to-blue-600"
               onClick={(e) => navigate("/chat", { replace: true })}
             >
-              Try NeoChat
+              Open NeoChat
             </button>
           </div>
         )}
@@ -57,9 +61,12 @@ const HeroSection = () => {
       <div className="bg-custom-gradient text-white min-h-screen p-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Three Cards in a Row */}
-          <CardComponent />
-          <CardComponent />
-          <CardComponent />
+          <CardComponent img1={cardImage1} data={"Text To Text Output"} />
+          <CardComponent img1={cardImage2} data={"Image To Text Output"} />
+          <CardComponent
+            img1={cardImage3}
+            data={"Image Live Scanning using Web Cam "}
+          />
         </div>
 
         {/* You can place other components like TwoCardComponent and Social below */}

@@ -228,7 +228,7 @@ const C2 = () => {
             onChange={handleTextChange}
             onKeyDown={handleKeyDown} // Trigger handleKeyDown on key press
             placeholder="Type your message..."
-            className="p-2 rounded-lg bg-gray-500 w-full max-w-xl mt-4 text-red-500 mb-6"
+            className="p-2 rounded-lg bg-black w-full max-w-xl mt-4 text-white mb-6"
           />
         </>
       )}
