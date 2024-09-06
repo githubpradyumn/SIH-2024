@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef } from "react";
 import { UserContext } from "../App";
 import { Web } from "./Web";
+import { Navigate } from "react-router-dom";
 
 const ChatComponent = () => {
   const SERVER = process.env.REACT_APP_SERVER;
@@ -13,6 +14,10 @@ const ChatComponent = () => {
   const [recording, setRecording] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(true); // Default to 'on'
   const recognitionRef = useRef(null);
+
+  if (!isAuthenticated) {
+    return <Navigate to="/" />;
+  }
 
   // Initialize SpeechRecognition (Web Speech API)
   const initSpeechRecognition = () => {
@@ -173,120 +178,114 @@ const ChatComponent = () => {
   };
 
   return (
-    <div className="relative flex flex-col items-center w-full h-[calc(100vh-4rem)]">
-      {isAuthenticated ? (
-        <>
-          {isCam ? (
-            <Web />
-          ) : (
-            <>
-              <div className="flex flex-col w-full max-w-xl bg-gray-100 rounded-lg p-4 h-96 overflow-y-auto">
-                {messages.map((msg, index) => (
-                  <div
-                    key={index}
-                    className={`flex ${
-                      msg.type === "sent" ? "justify-end" : "justify-start"
-                    } mb-4`}
-                  >
-                    <div
-                      className={`p-2 rounded-lg ${
-                        msg.type === "sent"
-                          ? "bg-white text-red-500"
-                          : "bg-gray-300 text-red-500"
-                      } max-w-xs`}
-                    >
-                      {msg.content}
-                      {/* Add speaker button */}
-                      {typeof msg.content === "string" && (
-                        <button
-                          className="ml-2 text-blue-500"
-                          onClick={() => speakText(msg.content)}
-                        >
-                          🔊
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <textarea
-                value={inputValue}
-                onChange={handleTextChange}
-                placeholder="Type your message..."
-                className="p-2 rounded-lg bg-gray-100 w-full max-w-xl mt-4 text-red-500 mb-6"
-              />
-            </>
-          )}
-
-          <div className="flex flex-col space-y-4">
-            <div className="flex space-x-4">
-              <button
-                onClick={startRecording}
-                disabled={recording}
-                className={`px-4 py-2 rounded-lg font-semibold text-white ${
-                  recording ? "bg-gray-500" : "bg-green-500"
-                }`}
-              >
-                Start Recording
-              </button>
-              <button
-                hidden
-                onClick={stopRecording}
-                disabled={!recording}
-                className={`px-4 py-2 rounded-lg font-semibold text-white ${
-                  !recording ? "bg-gray-500" : "bg-red-500"
-                }`}
-              >
-                Stop Recording
-              </button>
-              <button
-                onClick={() => setCam(!isCam)}
-                className={`px-4 py-2 rounded-lg font-semibold text-white ${
-                  isCam ? "bg-gray-500" : "bg-red-500"
-                }`}
-              >
-                {isCam ? "Chat" : "Camera"}
-              </button>
-              <button
-                onClick={() => {
-                  setAudioEnabled(!audioEnabled);
-                  window.speechSynthesis.cancel(); // Stop any ongoing speech
-                }}
-                className={`px-4 py-2 rounded-lg font-semibold text-white ${
-                  audioEnabled ? "bg-blue-500" : "bg-gray-500"
-                }`}
-              >
-                {audioEnabled ? "Audio On" : "Audio Off"}
-              </button>
-            </div>
-            <div className="flex space-x-4">
-              <button
-                onClick={handleSend}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg"
-              >
-                Send Text
-              </button>
-              <button
-                onClick={handleSendImage}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg"
-              >
-                Send Image
-              </button>
-
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/jpeg, image/png, .pdf, .doc, .docx"
-                className={`mt-2 ${isCam ? "hidden" : ""}`}
-                onChange={handleFileChange}
-              />
-            </div>
-          </div>
-        </>
+    <div className="relative flex flex-col items-center w-full h-[calc(100vh-4rem)] overflow-hidden top-16">
+      {isCam ? (
+        <Web />
       ) : (
-        <h1>Please login first</h1>
+        <>
+          <div className="flex flex-col w-full max-w-xl bg-gray-100 rounded-lg p-4 h-96 overflow-y-auto">
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`flex ${
+                  msg.type === "sent" ? "justify-end" : "justify-start"
+                } mb-4`}
+              >
+                <div
+                  className={`p-2 rounded-lg ${
+                    msg.type === "sent"
+                      ? "bg-white text-red-500"
+                      : "bg-gray-300 text-red-500"
+                  } max-w-xs`}
+                >
+                  {msg.content}
+                  {/* Add speaker button */}
+                  {typeof msg.content === "string" && (
+                    <button
+                      className="ml-2 text-blue-500"
+                      onClick={() => speakText(msg.content)}
+                    >
+                      🔊
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <textarea
+            value={inputValue}
+            onChange={handleTextChange}
+            placeholder="Type your message..."
+            className="p-2 rounded-lg bg-gray-100 w-full max-w-xl mt-4 text-red-500 mb-6"
+          />
+        </>
       )}
+
+      <div className="flex flex-col space-y-4">
+        <div className="flex space-x-4">
+          <button
+            onClick={startRecording}
+            disabled={recording}
+            className={`px-4 py-2 rounded-lg font-semibold text-white ${
+              recording ? "bg-gray-500" : "bg-green-500"
+            }`}
+          >
+            Start Recording
+          </button>
+          <button
+            hidden
+            onClick={stopRecording}
+            disabled={!recording}
+            className={`px-4 py-2 rounded-lg font-semibold text-white ${
+              !recording ? "bg-gray-500" : "bg-red-500"
+            }`}
+          >
+            Stop Recording
+          </button>
+          <button
+            onClick={() => setCam(!isCam)}
+            className={`px-4 py-2 rounded-lg font-semibold text-white ${
+              isCam ? "bg-gray-500" : "bg-red-500"
+            }`}
+          >
+            {isCam ? "Chat" : "Camera"}
+          </button>
+          <button
+            onClick={() => {
+              setAudioEnabled(!audioEnabled);
+              window.speechSynthesis.cancel(); // Stop any ongoing speech
+            }}
+            className={`px-4 py-2 rounded-lg font-semibold text-white ${
+              audioEnabled ? "bg-blue-500" : "bg-gray-500"
+            }`}
+          >
+            {audioEnabled ? "Audio On" : "Audio Off"}
+          </button>
+        </div>
+        <div className="flex space-x-4">
+          <button
+            onClick={handleSend}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+          >
+            Send Text
+          </button>
+          <button
+            onClick={handleSendImage}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+          >
+            Send Image
+          </button>
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg, image/png, .pdf, .doc, .docx"
+            className={`mt-2 ${isCam ? "hidden" : ""}`}
+            onChange={handleFileChange}
+          />
+        </div>
+      </div>
     </div>
   );
 };

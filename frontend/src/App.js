@@ -11,7 +11,6 @@ import Social from "./components/SocialComponent";
 import ChatComponent from "./components/ChatComponent";
 import LoginPage from "./components/LoginPage"; // Import your LoginPage component
 import ParticleRing from "./components/ParticleRing"; // Import ParticleRing component
-import LinksSection from "./components/Link";
 
 // modified
 import { useAuth0 } from "@auth0/auth0-react";
@@ -59,7 +58,7 @@ function App({ children }) {
             <div className="fixed top-0 left-0 w-full h-full -z-10">
               <ParticleRing />
             </div>
-  
+
             {/* Foreground content */}
             <Header />
             <Routes>
@@ -69,7 +68,6 @@ function App({ children }) {
               {/* Add other routes if needed */}
               {/* You can conditionally render other components here if required */}
             </Routes>
-            <LinksSection/>
           </div>
         )}
       </Router>

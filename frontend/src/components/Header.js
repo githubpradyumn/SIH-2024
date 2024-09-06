@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../App";
 import { useAuth0 } from "@auth0/auth0-react";
 import { VoiceControl } from "./VoiceControl";
+import LinksSection from "./Link";
 
 const Header = () => {
   // const { isAuthenticated, logout, loginWithRedirect } =
@@ -10,7 +11,8 @@ const Header = () => {
   const { isAuthenticated, logout, loginWithRedirect } = useAuth0();
   return (
     <header className="fixed top-0 left-0 right-0 bg-custom-gradient text-white p-6 z-50 flex justify-between items-center shadow-none h-16">
-      <div className="text-xl font-bold">ImageGPT</div>
+      <div className="text-xl font-bold">NeoChat</div>
+      <LinksSection />
       <nav className="space-x-6">
         <VoiceControl />
         <Link to="/chat" className="hover:underline">
