@@ -6,18 +6,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { UserContext } from "../App";
 
 const HeroSection = () => {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const now = new Date();
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = now.toLocaleDateString('en-US', options);
   const { isAuthenticated, user } = useContext(UserContext);
 
-  useEffect(() => {
-    // Update the date every 24 hours
-    const intervalId = setInterval(() => {
-      setCurrentDate(new Date());
-    }, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
-
-    return () => clearInterval(intervalId);
-  }, []);
-
+  
   const formatDate = (date) => {
     return new Intl.DateTimeFormat("en-GB", {
       day: "numeric",
@@ -33,32 +27,46 @@ const HeroSection = () => {
   return (
     <>
       {isAuthenticated ? (
-        <div>
-          <section className="text-center py-20 px-6 bg-fixed ">
-            <h1 className="text-5xl font-bold mb-6">Introducing ChatGPT</h1>
-            <p className="mb-6">{formatDate(currentDate)}</p>
-            <div className="flex justify-center space-x-4 mb-10">
-              <button className="bg-blue-500 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded">
-                Try ChatGPT
-              </button>
-              <button className="bg-gray-800 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
-                Download ChatGPT desktop
-              </button>
-            </div>
-            <p className="text-lg mb-8">
-              Free to use. Easy to try. Just ask and ChatGPT can help with
-              writing, learning, brainstorming, and more.
-            </p>
-          </section>
-          <div className="bg-custom-gradient text-white min-h-screen ">
-            <CardComponent />
-            <TwoCardComponent />
-            <Social />
-          </div>
-        </div>
+ <>
+ <section className="text-center py-20 px-6 bg-fixed ">
+   <h1 className="text-5xl font-bold mb-20 text-">Introducing NeoChat</h1>
+   <p className="mb-12 text-xl font-serif" style={{ fontFamily: 'Georgia, serif' }}>
+     {formatDate}
+   </p>
+
+   <div className="flex justify-center space-x-4 mb-20">
+   <button className="bg-purple-300 rounded-xl border-2 border-dashed border-black bg-white px-8 py-3 font-semibold uppercase text-black transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[6px_6px_0px_black] hover:bg-gradient-to-r hover:from-purple-500 hover:to-blue-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 active:translate-x-0 active:translate-y-0 active:shadow-none active:bg-gradient-to-r active:from-purple-600 active:to-blue-600">
+Try NeoChat
+</button>
+
+
+       
+     
+   </div>
+   <p className="text-2xl font-serif  mb-20 mx-auto text-center max-w-3xl px-4" style={{ fontFamily: 'Georgia, serif' }}>
+Free to use. Easy to try. Just ask and NeoChat can help with writing, learning, brainstorming, and more.
+
+</p>
+
+ </section>
+ <div className="bg-custom-gradient text-white min-h-screen p-8">
+ <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+   {/* Three Cards in a Row */}
+   <CardComponent />
+   <CardComponent />
+   <CardComponent />
+ </div>
+ 
+ {/* You can place other components like TwoCardComponent and Social below */}
+ <div className="mt-1">
+   
+   {/* <Social /> */}
+ </div>
+</div>
+</>
       ) : (
         <div>
-          <h1>login first</h1>
+          
         </div>
       )}
     </>
